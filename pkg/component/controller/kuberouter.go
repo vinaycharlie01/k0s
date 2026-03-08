@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"reflect"
 	"strconv"
+	"sync"
+	"time"
 
 	"github.com/k0sproject/k0s/internal/pkg/dir"
 	"github.com/k0sproject/k0s/internal/pkg/file"
@@ -30,6 +32,9 @@ type KubeRouter struct {
 	k0sVars *config.CfgVars
 
 	previousConfig kubeRouterConfig
+	currentConfig  *kubeRouterConfig
+	configMutex    sync.RWMutex
+	stop           func()
 }
 
 var _ manager.Component = (*KubeRouter)(nil)
@@ -47,6 +52,7 @@ type kubeRouterConfig struct {
 	PeerRouterASNs    string
 	PullPolicy        string
 	Args              []string
+	PodCIDR           string
 }
 
 // NewKubeRouter creates new KubeRouter reconciler component
@@ -63,8 +69,13 @@ func (k *KubeRouter) Init(context.Context) error {
 	return dir.Init(filepath.Join(k.k0sVars.ManifestsDir, "kuberouter"), constant.ManifestsDirMode)
 }
 
-// Stop no-op as nothing running
-func (k *KubeRouter) Stop() error { return nil }
+// Stop implements [manager.Component].
+func (k *KubeRouter) Stop() error {
+	if stop := k.stop; stop != nil {
+		stop()
+	}
+	return nil
+}
 
 func getHairpinConfig(krc *v1beta1.KubeRouter) (cniHairpin bool, globalHairpin bool) {
 	// Configure hairpin
@@ -90,7 +101,7 @@ func getHairpinConfig(krc *v1beta1.KubeRouter) (cniHairpin bool, globalHairpin b
 
 // Reconcile detects changes in configuration and applies them to the component
 func (k *KubeRouter) Reconcile(_ context.Context, clusterConfig *v1beta1.ClusterConfig) error {
-	logrus.Debug("reconcile method called for: KubeRouter")
+	k.log.Debug("reconcile method called for: KubeRouter")
 	if clusterConfig.Spec.Network.Provider != constant.CNIProviderKubeRouter {
 		return nil
 	}
@@ -144,13 +155,73 @@ func (k *KubeRouter) Reconcile(_ context.Context, clusterConfig *v1beta1.Cluster
 		CNIInstallerImage: clusterConfig.Spec.Images.KubeRouter.CNIInstaller.URI(),
 		PullPolicy:        clusterConfig.Spec.Images.DefaultPullPolicy,
 		Args:              append(args.ToDashedArgs(), clusterConfig.Spec.Network.KubeRouter.RawArgs...),
+		PodCIDR:           clusterConfig.Spec.Network.PodCIDR,
 	}
 
-	if reflect.DeepEqual(k.previousConfig, cfg) {
-		k.log.Info("config matches with previous, not reconciling anything")
-		return nil
-	}
+	// Store the new config for the Start() goroutine to process
+	k.configMutex.Lock()
+	k.currentConfig = &cfg
+	k.configMutex.Unlock()
 
+	return nil
+}
+
+// Start implements [manager.Component] with retry logic similar to Calico
+func (k *KubeRouter) Start(context.Context) error {
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan struct{})
+
+	go func() {
+		defer close(done)
+
+		var retry <-chan time.Time
+
+		for {
+			k.configMutex.RLock()
+			config := k.currentConfig
+			k.configMutex.RUnlock()
+
+			if config == nil {
+				k.log.Debug("Waiting for configuration")
+				time.Sleep(5 * time.Second)
+				continue
+			}
+
+			// Check if config has changed
+			if reflect.DeepEqual(k.previousConfig, *config) {
+				k.log.Debug("Config unchanged, waiting...")
+				time.Sleep(10 * time.Second)
+				continue
+			}
+
+			// Process the configuration
+			retry = nil
+			if err := k.processConfig(config); err != nil {
+				retry = time.After(10 * time.Second)
+				k.log.WithError(err).Error("Failed to process kube-router configuration, retrying in 10 seconds")
+			} else {
+				k.log.Info("Successfully processed kube-router configuration")
+				k.previousConfig = *config
+			}
+
+			// Wait for retry or context cancellation
+			select {
+			case <-retry:
+				k.log.Debug("Retrying configuration processing")
+			case <-time.After(30 * time.Second):
+				// Check for config changes every 30 seconds
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+
+	k.stop = func() { cancel(); <-done }
+	return nil
+}
+
+// processConfig writes the kube-router manifests
+func (k *KubeRouter) processConfig(cfg *kubeRouterConfig) error {
 	output := bytes.NewBuffer([]byte{})
 	tw := templatewriter.TemplateWriter{
 		Name:     "kube-router",
@@ -160,20 +231,15 @@ func (k *KubeRouter) Reconcile(_ context.Context, clusterConfig *v1beta1.Cluster
 
 	err := tw.WriteToBuffer(output)
 	if err != nil {
-		return fmt.Errorf("error writing kube-router manifests, will NOT retry: %w", err)
+		return fmt.Errorf("error writing kube-router manifests: %w", err)
 	}
 
 	if err := file.AtomicWithTarget(filepath.Join(k.k0sVars.ManifestsDir, "kuberouter", "kube-router.yaml")).
 		WithPermissions(constant.CertMode).
 		Write(output.Bytes()); err != nil {
-		return fmt.Errorf("error writing kube-router manifests, will NOT retry: %w", err)
+		return fmt.Errorf("error writing kube-router manifests: %w", err)
 	}
 
-	return nil
-}
-
-// Start implements [manager.Component].
-func (k *KubeRouter) Start(context.Context) error {
 	return nil
 }
 
@@ -204,7 +270,8 @@ data:
              "hairpinMode": {{ .CNIHairpin }},
              "ipMasq": {{ .IPMasq }},
              "ipam":{
-                "type":"host-local"
+                "type":"host-local",
+                "subnet":"{{ .PodCIDR }}"
              }
           },
           {
@@ -318,6 +385,10 @@ spec:
               fieldPath: metadata.name
         - name: KUBE_ROUTER_CNI_CONF_FILE
           value: /etc/cni/net.d/10-kuberouter.conflist
+        - name: KUBERNETES_SERVICE_HOST
+          value: "127.0.0.1"
+        - name: KUBERNETES_SERVICE_PORT
+          value: "6443"
         ports:
         - name: healthz
           containerPort: 20244
