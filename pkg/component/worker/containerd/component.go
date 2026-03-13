@@ -43,11 +43,10 @@ const containerdTomlHeader = `# k0s_managed=true
 
 // Component implements the component interface to manage containerd as a k0s component.
 type Component struct {
-	LogLevel           string
-	K0sVars            *config.CfgVars
-	Profile            *workerconfig.Profile
-	OCIBundlePath      string
-	RegistryConfigPath string // Optional: path to registries.yaml file
+	LogLevel      string
+	K0sVars       *config.CfgVars
+	Profile       *workerconfig.Profile
+	OCIBundlePath string
 
 	supervisor     *supervisor.Supervisor
 	executablePath string
@@ -64,7 +63,7 @@ func NewComponent(logLevel string, vars *config.CfgVars, profile *workerconfig.P
 		Profile:     profile,
 		confPath:    defaultConfPath,
 		importsPath: defaultImportsPath,
-		// RegistryConfigPath is optional and can be set after creation
+		// RegistryConfig is optional and can be set after creation
 	}
 	return c
 }
@@ -186,16 +185,8 @@ func (c *Component) setupConfig() error {
 		return fmt.Errorf("can't create containerd config imports dir: %w", err)
 	}
 
-	// Apply registry configuration if RegistryConfigPath is set
-	// LoadRegistryConfig handles non-existent files gracefully (returns empty config)
-	if c.RegistryConfigPath != "" {
-		certsDir := filepath.Join(c.importsPath, "certs.d")
-		if err := ApplyRegistryConfig(c.RegistryConfigPath, certsDir); err != nil {
-			logrus.WithError(err).Warnf("Failed to apply registry configuration from %s", c.RegistryConfigPath)
-		} else {
-			logrus.Infof("Applied registry configuration from %s", c.RegistryConfigPath)
-		}
-	}
+	// TODO: Apply registry configuration from ClusterSpec when available
+	// The registry configuration should be passed through the Profile or another mechanism
 
 	configurer := &configurer{
 		loadPath:   filepath.Join(c.importsPath, "*.toml"),

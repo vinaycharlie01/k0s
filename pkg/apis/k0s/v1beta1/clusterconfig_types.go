@@ -40,6 +40,7 @@ type ClusterSpec struct {
 	Extensions        *ClusterExtensions     `json:"extensions,omitempty"`
 	Konnectivity      *KonnectivitySpec      `json:"konnectivity,omitempty"`
 	FeatureGates      FeatureGates           `json:"featureGates,omitempty"`
+	Registries        *RegistrySpec          `json:"registries,omitempty"`
 }
 
 // ClusterConfigStatus defines the observed state of ClusterConfig

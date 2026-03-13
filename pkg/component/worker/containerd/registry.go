@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	v1beta1 "github.com/k0sproject/k0s/pkg/apis/k0s/v1beta1"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -45,16 +46,20 @@ func LoadRegistryConfig(path string) (*RegistryConfig, error) {
 }
 
 // ApplyRegistryConfig applies registry configuration by generating hosts.toml files
-func ApplyRegistryConfig(registryConfigPath, certsDir string) error {
-	config, err := LoadRegistryConfig(registryConfigPath)
-	if err != nil {
-		return err
-	}
-
-	// If no registries configured, nothing to do
-	if len(config.Mirrors) == 0 && len(config.Configs) == 0 {
+// Accepts a RegistryConfig directly from k0s spec
+func ApplyRegistryConfig(config *RegistryConfig, certsDir string) error {
+	// If config is nil or no registries configured, nothing to do
+	if config == nil || (len(config.Mirrors) == 0 && len(config.Configs) == 0) {
 		logrus.Debug("No registry configuration found, skipping")
 		return nil
+	}
+
+	// Initialize maps if nil
+	if config.Mirrors == nil {
+		config.Mirrors = make(map[string]MirrorConfig)
+	}
+	if config.Configs == nil {
+		config.Configs = make(map[string]HostConfig)
 	}
 
 	// Ensure certs.d directory exists
@@ -81,6 +86,77 @@ func ApplyRegistryConfig(registryConfigPath, certsDir string) error {
 	}
 
 	return nil
+}
+
+// ApplyRegistryConfigFromFile loads registry configuration from a YAML file and applies it
+// This is a convenience wrapper around LoadRegistryConfig and ApplyRegistryConfig
+func ApplyRegistryConfigFromFile(registryConfigPath, certsDir string) error {
+	config, err := LoadRegistryConfig(registryConfigPath)
+	if err != nil {
+		return err
+	}
+
+	return ApplyRegistryConfig(config, certsDir)
+}
+
+// ConvertRegistrySpec converts v1beta1.RegistrySpec to RegistryConfig
+func ConvertRegistrySpec(spec *v1beta1.RegistrySpec) *RegistryConfig {
+	if spec == nil {
+		return nil
+	}
+
+	config := &RegistryConfig{
+		Mirrors: make(map[string]MirrorConfig),
+		Configs: make(map[string]HostConfig),
+	}
+
+	// Convert mirrors
+	for registry, mirror := range spec.Mirrors {
+		mirrorConfig := MirrorConfig{
+			Endpoint: mirror.Endpoint,
+		}
+
+		// Convert rewrite rules
+		if len(mirror.Rewrite) > 0 {
+			mirrorConfig.Rewrite = make([]Rewrite, len(mirror.Rewrite))
+			for i, r := range mirror.Rewrite {
+				mirrorConfig.Rewrite[i] = Rewrite{
+					Pattern: r.Pattern,
+					Replace: r.Replace,
+				}
+			}
+		}
+
+		config.Mirrors[registry] = mirrorConfig
+	}
+
+	// Convert configs
+	for registry, host := range spec.Configs {
+		hostConfig := HostConfig{}
+
+		// Convert auth
+		if host.Auth != nil {
+			hostConfig.Auth = &AuthConfig{
+				Username: host.Auth.Username,
+				Password: host.Auth.Password,
+				Auth:     host.Auth.Auth,
+			}
+		}
+
+		// Convert TLS
+		if host.TLS != nil {
+			hostConfig.TLS = &TLSConfig{
+				CertFile:           host.TLS.CertFile,
+				KeyFile:            host.TLS.KeyFile,
+				CAFile:             host.TLS.CAFile,
+				InsecureSkipVerify: host.TLS.InsecureSkipVerify,
+			}
+		}
+
+		config.Configs[registry] = hostConfig
+	}
+
+	return config
 }
 
 // generateHostsToml generates a hosts.toml file for a specific registry
