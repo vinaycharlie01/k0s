@@ -28,6 +28,7 @@ type Profile struct {
 	PauseImage             *v1beta1.ImageSpec
 	DualStackEnabled       bool
 	AutopilotDisabled      bool
+	Registries             *v1beta1.RegistrySpec
 }
 
 func (p *Profile) DeepCopy() *Profile {
@@ -50,6 +51,9 @@ func (p *Profile) DeepCopyInto(out *Profile) {
 		in, out := &p.NodeLocalLoadBalancing, &out.NodeLocalLoadBalancing
 		*out = new(v1beta1.NodeLocalLoadBalancing)
 		(*in).DeepCopyInto(*out)
+	}
+	if p.Registries != nil {
+		out.Registries = p.Registries.DeepCopy()
 	}
 }
 
@@ -145,6 +149,7 @@ func forEachConfigMapEntry(profile *Profile, f func(fieldName string, ptr any)) 
 		"pauseImage":             &profile.PauseImage,
 		"dualStackEnabled":       &profile.DualStackEnabled,
 		"autopilotDisabled":      &profile.AutopilotDisabled,
+		"registries":             &profile.Registries,
 	} {
 		f(fieldName, ptr)
 	}

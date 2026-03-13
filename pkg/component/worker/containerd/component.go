@@ -185,8 +185,16 @@ func (c *Component) setupConfig() error {
 		return fmt.Errorf("can't create containerd config imports dir: %w", err)
 	}
 
-	// TODO: Apply registry configuration from ClusterSpec when available
-	// The registry configuration should be passed through the Profile or another mechanism
+	// Apply registry configuration from Profile if available
+	if c.Profile.Registries != nil {
+		registryConfig := ConvertRegistrySpec(c.Profile.Registries)
+		certsDir := filepath.Join(c.importsPath, "certs.d")
+		if err := ApplyRegistryConfig(registryConfig, certsDir); err != nil {
+			logrus.WithError(err).Warn("Failed to apply registry configuration")
+		} else {
+			logrus.Info("Applied registry configuration from cluster spec")
+		}
+	}
 
 	configurer := &configurer{
 		loadPath:   filepath.Join(c.importsPath, "*.toml"),
