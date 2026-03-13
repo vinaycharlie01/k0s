@@ -38,6 +38,7 @@ type configSnapshot struct {
 	featureGates           v1beta1.FeatureGates
 	pauseImage             *v1beta1.ImageSpec
 	pauseWindowsImage      *v1beta1.ImageSpec
+	registries             *v1beta1.RegistrySpec
 }
 
 func (s *snapshot) DeepCopy() *snapshot {
@@ -71,6 +72,7 @@ func (s *configSnapshot) DeepCopyInto(out *configSnapshot) {
 	out.featureGates = s.featureGates.DeepCopy()
 	out.pauseImage = s.pauseImage.DeepCopy()
 	out.pauseWindowsImage = s.pauseWindowsImage.DeepCopy()
+	out.registries = s.registries.DeepCopy()
 }
 
 // takeConfigSnapshot converts ClusterSpec to a delta snapshot
@@ -83,13 +85,14 @@ func takeConfigSnapshot(spec *v1beta1.ClusterSpec) configSnapshot {
 	}
 
 	return configSnapshot{
-		spec.Network.DualStack.Enabled,
-		spec.Network.NodeLocalLoadBalancing.DeepCopy(),
-		konnectivityAgentPort,
-		corev1.PullPolicy(spec.Images.DefaultPullPolicy),
-		spec.WorkerProfiles.DeepCopy(),
-		spec.FeatureGates.DeepCopy(),
-		spec.Images.Pause.DeepCopy(),
-		spec.Images.Windows.Pause.DeepCopy(),
+		dualStackEnabled:       spec.Network.DualStack.Enabled,
+		nodeLocalLoadBalancing: spec.Network.NodeLocalLoadBalancing.DeepCopy(),
+		konnectivityAgentPort:  konnectivityAgentPort,
+		defaultImagePullPolicy: corev1.PullPolicy(spec.Images.DefaultPullPolicy),
+		profiles:               spec.WorkerProfiles.DeepCopy(),
+		featureGates:           spec.FeatureGates.DeepCopy(),
+		pauseImage:             spec.Images.Pause.DeepCopy(),
+		pauseWindowsImage:      spec.Images.Windows.Pause.DeepCopy(),
+		registries:             spec.Registries.DeepCopy(),
 	}
 }

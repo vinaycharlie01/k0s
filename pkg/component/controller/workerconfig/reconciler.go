@@ -606,6 +606,7 @@ func (r *Reconciler) buildProfile(snapshot *snapshot) *workerconfig.Profile {
 		},
 		DualStackEnabled:  snapshot.dualStackEnabled,
 		AutopilotDisabled: r.autopilotDisabled,
+		Registries:        snapshot.registries.DeepCopy(),
 	}
 
 	if workerProfile.NodeLocalLoadBalancing != nil &&
