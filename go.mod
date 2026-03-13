@@ -88,6 +88,8 @@ require (
 	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4
 )
 
+require gopkg.in/yaml.v2 v2.4.0
+
 require (
 	cel.dev/expr v0.25.1 // indirect
 	cyphar.com/go-pathrs v0.2.1 // indirect
@@ -274,7 +276,6 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/controller-manager v0.35.2 // indirect
 	k8s.io/cri-client v0.35.0 // indirect

@@ -1036,6 +1036,76 @@ spec:
                     description: Network CIDR to use for cluster VIP services
                     type: string
                 type: object
+              registries:
+                description: RegistrySpec defines the registry configuration for containerd
+                properties:
+                  configs:
+                    additionalProperties:
+                      description: HostSpec defines authentication and TLS configuration
+                        for a registry
+                      properties:
+                        auth:
+                          description: Auth defines authentication credentials
+                          properties:
+                            auth:
+                              description: Auth is base64 encoded username:password
+                              type: string
+                            password:
+                              description: Password for authentication
+                              type: string
+                            username:
+                              description: Username for authentication
+                              type: string
+                          type: object
+                        tls:
+                          description: TLS defines TLS/SSL configuration
+                          properties:
+                            caFile:
+                              description: CAFile is the path to the CA certificate
+                              type: string
+                            certFile:
+                              description: CertFile is the path to the client certificate
+                              type: string
+                            insecureSkipVerify:
+                              description: InsecureSkipVerify skips TLS verification
+                              type: boolean
+                            keyFile:
+                              description: KeyFile is the path to the client key
+                              type: string
+                          type: object
+                      type: object
+                    description: Configs defines registry authentication and TLS configuration
+                    type: object
+                  mirrors:
+                    additionalProperties:
+                      description: MirrorSpec defines mirror endpoints for a registry
+                      properties:
+                        endpoint:
+                          description: Endpoint is a list of mirror endpoints
+                          items:
+                            type: string
+                          type: array
+                        rewrite:
+                          description: Rewrite defines path rewrite rules
+                          items:
+                            description: RewriteSpec defines a rewrite rule for registry
+                              paths
+                            properties:
+                              pattern:
+                                description: Pattern is the regex pattern to match
+                                type: string
+                              replace:
+                                description: Replace is the replacement string
+                                type: string
+                            required:
+                            - pattern
+                            - replace
+                            type: object
+                          type: array
+                      type: object
+                    description: Mirrors defines registry mirrors
+                    type: object
+                type: object
               scheduler:
                 description: SchedulerSpec defines the fields for the Scheduler
                 properties:
