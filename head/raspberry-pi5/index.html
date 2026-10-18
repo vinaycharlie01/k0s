@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../img/k0s-favicon-192.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1074,6 +1074,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../version-skew-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Version skew policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../backup/" class="md-nav__link">
         
   
@@ -1138,6 +1166,34 @@
     
   
     Reset (Uninstall)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../directories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Directories
   
 
     
@@ -2733,6 +2789,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../governance/cncf/ai-conformance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes AI conformance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../governance/cncf/gtr/" class="md-nav__link">
         
   
@@ -2876,7 +2960,7 @@
   <span class="md-ellipsis">
     
   
-    Contributing
+    Contributing guidelines
   
 
     
@@ -2892,7 +2976,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Contributing
+    Contributing guidelines
   
 
           </label>
@@ -2912,7 +2996,7 @@
   <span class="md-ellipsis">
     
   
-    Getting Started
+    Overview
   
 
     
@@ -2941,6 +3025,34 @@
     
   
     GitHub Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributors/code_guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code guidelines
   
 
     
@@ -3276,17 +3388,17 @@ any issues.</p>
 <h3 id="download-k0s">Download k0s<a class="headerlink" href="#download-k0s" title="Permanent link">#</a></h3>
 <p>Download a <a href="https://github.com/k0sproject/k0s/releases/latest">k0s release</a>. For
 example:</p>
-<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>-O<span class="w"> </span>/tmp/k0s<span class="w"> </span>https://github.com/k0sproject/k0s/releases/download/v1.35.2+head/k0s-v1.35.2+head-arm64<span class="w"> </span><span class="c1"># replace version number!</span>
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>-O<span class="w"> </span>/tmp/k0s<span class="w"> </span>https://github.com/k0sproject/k0s/releases/download/v1.37.1+head/k0s-v1.37.1+head-arm64<span class="w"> </span><span class="c1"># replace version number!</span>
 sudo<span class="w"> </span>install<span class="w"> </span>/tmp/k0s<span class="w"> </span>/usr/local/bin/k0s
 </code></pre></div>
 <p>― or ―</p>
 <p>Use the k0s download script (as one command) to download the latest stable k0s
 and make it executable in <code>/usr/bin/k0s</code>.</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>https://get.k0s.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">'=https'</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>https://get.k0s.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
 </code></pre></div>
 <p>At this point you can run <code>k0s</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>k0s<span class="w"> </span>version
-<span class="go">v1.35.2+head</span>
+<span class="go">v1.37.1+head</span>
 </code></pre></div>
 <p>To check if k0s's <a href="../system-requirements/">system requirements</a> and <a href="../external-runtime-deps/">external
 runtime dependencies</a> are fulfilled by your current
@@ -3296,6 +3408,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
 <span class="go">File system of /var/lib/k0s: ext4 (pass)</span>
 <span class="go">Disk space available for /var/lib/k0s: 44.3 GiB (pass)</span>
 <span class="go">Relative disk space available for /var/lib/k0s: 79% (pass)</span>
+<span class="go">Network resolver configuration: OK (pass)</span>
 <span class="go">Name resolution: localhost: [::1 127.0.0.1] (pass)</span>
 <span class="go">Operating system: Linux (pass)</span>
 <span class="go">  Linux kernel release: 6.6.51+rpt-rpi-2712 (pass)</span>
@@ -3306,15 +3419,15 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
 <span class="go">  Executable in PATH: umount: /usr/bin/umount (pass)</span>
 <span class="go">  /proc file system: mounted (0x9fa0) (pass)</span>
 <span class="go">  Control Groups: version 2 (pass)</span>
-<span class="go">    cgroup controller &quot;cpu&quot;: available (is a listed root controller) (pass)</span>
-<span class="go">    cgroup controller &quot;cpuacct&quot;: available (via cpu in version 2) (pass)</span>
-<span class="go">    cgroup controller &quot;cpuset&quot;: available (is a listed root controller) (pass)</span>
-<span class="go">    cgroup controller &quot;memory&quot;: available (is a listed root controller) (pass)</span>
-<span class="go">    cgroup controller &quot;devices&quot;: available (device filters attachable) (pass)</span>
-<span class="go">    cgroup controller &quot;freezer&quot;: available (cgroup.freeze exists) (pass)</span>
-<span class="go">    cgroup controller &quot;pids&quot;: available (is a listed root controller) (pass)</span>
-<span class="go">    cgroup controller &quot;hugetlb&quot;: unavailable (warning)</span>
-<span class="go">    cgroup controller &quot;blkio&quot;: available (via io in version 2) (pass)</span>
+<span class="go">    cgroup controller "cpu": available (is a listed root controller) (pass)</span>
+<span class="go">    cgroup controller "cpuacct": available (via cpu in version 2) (pass)</span>
+<span class="go">    cgroup controller "cpuset": available (is a listed root controller) (pass)</span>
+<span class="go">    cgroup controller "memory": available (is a listed root controller) (pass)</span>
+<span class="go">    cgroup controller "devices": available (device filters attachable) (pass)</span>
+<span class="go">    cgroup controller "freezer": available (cgroup.freeze exists) (pass)</span>
+<span class="go">    cgroup controller "pids": available (is a listed root controller) (pass)</span>
+<span class="go">    cgroup controller "hugetlb": unavailable (warning)</span>
+<span class="go">    cgroup controller "blkio": available (via io in version 2) (pass)</span>
 <span class="go">  CONFIG_CGROUPS: Control Group support: built-in (pass)</span>
 <span class="go">    CONFIG_CGROUP_SCHED: Group CPU scheduler: built-in (pass)</span>
 <span class="go">      CONFIG_FAIR_GROUP_SCHED: Group scheduling for SCHED_OTHER: built-in (pass)</span>
@@ -3333,16 +3446,16 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
 <span class="go">      CONFIG_NF_CONNTRACK: Netfilter connection tracking support: module (pass)</span>
 <span class="go">      CONFIG_NETFILTER_XTABLES: Netfilter Xtables support: module (pass)</span>
 <span class="go">        CONFIG_NETFILTER_XT_TARGET_REDIRECT: REDIRECT target support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_COMMENT: &quot;comment&quot; match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_COMMENT: "comment" match support: module (pass)</span>
 <span class="go">        CONFIG_NETFILTER_XT_MARK: nfmark target and match support: module (pass)</span>
 <span class="go">        CONFIG_NETFILTER_XT_SET: set target and match support: module (pass)</span>
 <span class="go">        CONFIG_NETFILTER_XT_TARGET_MASQUERADE: MASQUERADE target support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_NAT: &quot;SNAT and DNAT&quot; targets support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_ADDRTYPE: &quot;addrtype&quot; address type match support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_CONNTRACK: &quot;conntrack&quot; connection tracking match support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_MULTIPORT: &quot;multiport&quot; Multiple port match support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_RECENT: &quot;recent&quot; match support: module (pass)</span>
-<span class="go">        CONFIG_NETFILTER_XT_MATCH_STATISTIC: &quot;statistic&quot; match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_NAT: "SNAT and DNAT" targets support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_ADDRTYPE: "addrtype" address type match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_CONNTRACK: "conntrack" connection tracking match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_MULTIPORT: "multiport" Multiple port match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_RECENT: "recent" match support: module (pass)</span>
+<span class="go">        CONFIG_NETFILTER_XT_MATCH_STATISTIC: "statistic" match support: module (pass)</span>
 <span class="go">      CONFIG_NETFILTER_NETLINK: module (pass)</span>
 <span class="go">      CONFIG_NF_NAT: module (pass)</span>
 <span class="go">      CONFIG_IP_SET: IP set support: module (pass)</span>
@@ -3400,7 +3513,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
 <p>By default, k0sctl doesn’t prompt you for passphrases, so the easiest solution is to load your key into an SSH agent before running k0sctl. Here’s how you can do it:</p>
 <p>1. Start the SSH agent (if not already running)</p>
 <div class="highlight"><pre><span></span><code>  ```bash
-  eval &quot;$(ssh-agent -s)&quot;
+  eval "$(ssh-agent -s)"
   ```
 </code></pre></div>
 <p>2. Add your private key (you’ll be prompted for the passphrase)</p>
@@ -3426,7 +3539,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
   k0sctl v0.21.0 Copyright 2023, k0sctl authors.
   INFO ==&gt; Running phase: Set k0s version
   INFO Looking up latest stable k0s version
-  INFO Using k0s version v1.35.2+head
+  INFO Using k0s version v1.37.1+head
   INFO ==&gt; Running phase: Connect to hosts
   INFO [ssh] 192.168.31.93:22: connected
   INFO ==&gt; Running phase: Detect host operating systems
@@ -3439,7 +3552,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
   INFO ==&gt; Running phase: Validate hosts
   INFO ==&gt; Running phase: Validate facts
   INFO ==&gt; Running phase: Download k0s on hosts
-  INFO [ssh] 192.168.31.93:22: downloading k0s v1.35.2+head
+  INFO [ssh] 192.168.31.93:22: downloading k0s v1.37.1+head
   INFO ==&gt; Running phase: Install k0s binaries on hosts
   INFO [ssh] 192.168.31.93:22: validating configuration
   INFO ==&gt; Running phase: Configure k0s
@@ -3451,7 +3564,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
   INFO ==&gt; Running phase: Release exclusive host lock
   INFO ==&gt; Running phase: Disconnect from hosts
   INFO ==&gt; Finished in 4m14s
-  INFO k0s cluster version v1.35.2+head is now installed
+  INFO k0s cluster version v1.37.1+head is now installed
   INFO Tip: To access the cluster you can now fetch the admin kubeconfig using:
   INFO      k0sctl kubeconfig --config cluster.yaml
   ```
@@ -3466,7 +3579,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
   $ export KUBECONFIG=pi_cluster.kubeconfig
   $ kubectl get nodes
   NAME   STATUS   ROLES           AGE     VERSION
-  pi     Ready    control-plane   2m54s   v1.35.2+k0s
+  pi     Ready    control-plane   2m54s   v1.37.1+k0s
   ```
 </code></pre></div>
 <h2 id="tear-down-k0s-on-pi-5">Tear down k0s on Pi 5<a class="headerlink" href="#tear-down-k0s-on-pi-5" title="Permanent link">#</a></h2>
@@ -3541,14 +3654,6 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
     
     
     
-    <a href="https://x.com/k0sproject" target="_blank" rel="noopener" title="k0s on X" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M357.2 48h70.6L273.6 224.2 455 464H313L201.7 318.6 74.5 464H3.8l164.9-188.5L-5.2 48h145.6l100.5 132.9zm-24.8 373.8h39.1L119.1 88h-42z"/></svg>
-    </a>
-  
-    
-    
-    
-    
     <a href="https://blog.k0sproject.io/" target="_blank" rel="noopener" title="The k0sproject community blog" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"/></svg>
     </a>
@@ -3565,7 +3670,7 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
     
     
     
-    <a href="https://kubernetes.slack.com/archives/C07VAPJUECS" target="_blank" rel="noopener" title="k0s on the k8s slack" class="md-social__link">
+    <a href="https://kubernetes.slack.com/archives/C0809EA06QZ" target="_blank" rel="noopener" title="#k0s-users on Kubernetes Slack" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
     </a>
   
@@ -3592,10 +3697,10 @@ setup, you can invoke <code>k0s sysinfo</code>:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["toc.autohide", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["toc.autohide", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

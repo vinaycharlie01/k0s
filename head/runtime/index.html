@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../img/k0s-favicon-192.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -862,6 +862,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../version-skew-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Version skew policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../backup/" class="md-nav__link">
         
   
@@ -926,6 +954,34 @@
     
   
     Reset (Uninstall)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../directories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Directories
   
 
     
@@ -2654,6 +2710,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../governance/cncf/ai-conformance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes AI conformance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../governance/cncf/gtr/" class="md-nav__link">
         
   
@@ -2797,7 +2881,7 @@
   <span class="md-ellipsis">
     
   
-    Contributing
+    Contributing guidelines
   
 
     
@@ -2813,7 +2897,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Contributing
+    Contributing guidelines
   
 
           </label>
@@ -2833,7 +2917,7 @@
   <span class="md-ellipsis">
     
   
-    Getting Started
+    Overview
   
 
     
@@ -2862,6 +2946,34 @@
     
   
     GitHub Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributors/code_guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code guidelines
   
 
     
@@ -3093,30 +3205,27 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 </code></pre></div>
 <p>Next, add the following default values to the configuration file:</p>
 <div class="highlight"><pre><span></span><code><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
-<span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/var/lib/k0s/containerd&quot;</span>
-<span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/run/k0s/containerd&quot;</span>
+<span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/var/lib/k0s/containerd"</span>
+<span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/run/k0s/containerd"</span>
 <span class="p">...</span>
 
 <span class="k">[grpc]</span>
-<span class="w">  </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/run/k0s/containerd.sock&quot;</span>
+<span class="w">  </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/run/k0s/containerd.sock"</span>
 </code></pre></div>
 <h2 id="k0s-managed-dynamic-runtime-configuration">k0s managed dynamic runtime configuration<a class="headerlink" href="#k0s-managed-dynamic-runtime-configuration" title="Permanent link">#</a></h2>
 <p>As of 1.27.1, k0s allows dynamic configuration of containerd CRI runtimes. This
 works by k0s creating a special directory in <code>/etc/k0s/containerd.d/</code>, where
 users can place partial containerd configuration TOML files (i.e. files with a
-<code>.toml</code> extension).</p>
-<p>K0s will automatically pick up these files and add them as containerd
-configuration <code>imports</code>. If a partial configuration file contains a CRI plugin
-configuration section, k0s will instead treat such a file as a <a href="https://datatracker.ietf.org/doc/html/rfc7396">merge patch</a> to
-k0s's default containerd configuration. This is to mitigate <a href="https://github.com/containerd/containerd/pull/3574/commits/24b9e2c1a0a72a7ad302cdce7da3abbc4e6295cb">containerd's
-decision</a> to replace rather than merge individual plugin configuration sections
-from imported configuration files. However, this behavior <a href="https://github.com/containerd/containerd/pull/7347">may</a>
-<a href="https://github.com/containerd/containerd/pull/9982">change</a> in future releases of containerd.</p>
+<code>.toml</code> extension). k0s will automatically pick up these files and add them as containerd
+configuration <code>imports</code>. When k0s sees changes in this directory, it will automatically reload containerd with the new configuration.</p>
+<p>Starting with k0s 1.36, k0s uses containerd 2 which modifies the configuration
+and all drop-in files must use the containerd v3 configuration format. Either
+omit the <code>version</code> field entirely or set it to <code>version = 3</code>. Any file that sets
+<code>version = 2</code> or that references the legacy <code>io.containerd.grpc.v1.cri</code> plugin
+path will cause k0s to exit with an error on pre-flight checks.  If you have drop-in files from previous versions,
+update them before restarting k0s.</p>
 <p>Please note, that in order for drop-ins in <code>/etc/k0s/containerd.d</code> to take effect on running configuration, <code>/etc/k0s/containerd.toml</code> needs to be k0s managed.</p>
 <p>If you change the first magic line (<code># k0s_managed=true</code>) in the <code>/etc/k0s/containerd.toml</code> (by accident or on purpose), it automatically becomes "not k0s managed". To make it "k0s managed" again, remove <code>/etc/k0s/containerd.toml</code> and restart k0s service on the node, it'll be recreated by k0s.</p>
-<p>To confirm that drop-ins are being applied to the running configuration, you can
-check the contents of <code>/run/k0s/containerd-cri.toml</code>; drop-in specific
-configuration should be present in this file.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">#</a></h3>
 <p>The following sections provide some examples of how to use k0s managed drop-in
 configurations for common configuration tasks.</p>
@@ -3127,28 +3236,28 @@ configuration:</p>
 <p><code>/etc/k0s/containerd.d/cri-registry.toml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
 
-<span class="k">[plugins.</span><span class="s2">&quot;io.containerd.cri.v1.images&quot;</span><span class="k">.registry]</span>
-<span class="n">config_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/etc/k0s/containerd.d/certs.d&quot;</span>
+<span class="k">[plugins.</span><span class="s2">"io.containerd.cri.v1.images"</span><span class="k">.registry]</span>
+<span class="n">config_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/etc/k0s/containerd.d/certs.d"</span>
 </code></pre></div>
 <p>Create the file <code>/etc/k0s/containerd.d/certs.d/docker.io/hosts.toml</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Always resolve tags against Docker Hub as the &quot;server&quot;</span>
-<span class="n">server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://registry-1.docker.io&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Always resolve tags against Docker Hub as the "server"</span>
+<span class="n">server</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"https://registry-1.docker.io"</span>
 
-<span class="k">[host.</span><span class="s2">&quot;https://docker-mirror.internal.acme.corp:5000&quot;</span><span class="k">]</span>
-<span class="n">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pull&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resolve&quot;</span><span class="p">]</span>
-<span class="c1"># Trust the internal mirror&#39;s certificate. Paths will be resolved relative to</span>
-<span class="c1"># the containing file&#39;s directory, e.g. the below path will be resolved to</span>
+<span class="k">[host.</span><span class="s2">"https://docker-mirror.internal.acme.corp:5000"</span><span class="k">]</span>
+<span class="n">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"pull"</span><span class="p">,</span><span class="w"> </span><span class="s2">"resolve"</span><span class="p">]</span>
+<span class="c1"># Trust the internal mirror's certificate. Paths will be resolved relative to</span>
+<span class="c1"># the containing file's directory, e.g. the below path will be resolved to</span>
 <span class="c1"># /etc/k0s/containerd.d/certs.d/docker.io/internal-mirror.crt</span>
-<span class="n">ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;internal-mirror.crt&quot;</span>
-<span class="c1"># Or, alternatively, disable TLS verification, if you know what you&#39;re doing:</span>
+<span class="n">ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"internal-mirror.crt"</span>
+<span class="c1"># Or, alternatively, disable TLS verification, if you know what you're doing:</span>
 <span class="c1"># skip_verify = true</span>
 
-<span class="c1"># Use Google&#39;s public pull-through cache</span>
-<span class="k">[host.</span><span class="s2">&quot;https://mirror.gcr.io&quot;</span><span class="k">]</span>
-<span class="n">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pull&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resolve&quot;</span><span class="p">]</span>
+<span class="c1"># Use Google's public pull-through cache</span>
+<span class="k">[host.</span><span class="s2">"https://mirror.gcr.io"</span><span class="k">]</span>
+<span class="n">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"pull"</span><span class="p">,</span><span class="w"> </span><span class="s2">"resolve"</span><span class="p">]</span>
 </code></pre></div>
 <p>For more details on how to configure registry hosts, please refer to the
-<a href="https://github.com/containerd/containerd/blob/release/1.7/docs/hosts.md">official containerd configuration</a>.</p>
+<a href="https://github.com/containerd/containerd/blob/release/2.2/docs/hosts.md">official containerd configuration</a>.</p>
 <h4 id="using-gvisor">Using gVisor<a class="headerlink" href="#using-gvisor" title="Permanent link">#</a></h4>
 <p><a href="https://gvisor.dev/docs/">gVisor</a> is an application kernel, written in Go, that implements a substantial portion of the Linux system call interface. It provides an additional layer of isolation between running applications and the host operating system.</p>
 <ol>
@@ -3174,8 +3283,8 @@ configuration:</p>
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | sudo tee /etc/k0s/containerd.d/gvisor.toml</span>
 <span class="s">version = 3</span>
 
-<span class="s">[plugins.&quot;io.containerd.cri.v1.runtime&quot;.containerd.runtimes.runsc]</span>
-<span class="s">  runtime_type = &quot;io.containerd.runsc.v1&quot;</span>
+<span class="s">[plugins."io.containerd.cri.v1.runtime".containerd.runtimes.runsc]</span>
+<span class="s">  runtime_type = "io.containerd.runsc.v1"</span>
 <span class="s">EOF</span>
 </code></pre></div>
 </li>
@@ -3300,11 +3409,11 @@ metrics</a> when using cri-dockerd.</p>
 <p>The successful configuration can be verified by executing the following command:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>-o<span class="w"> </span>wide
 <span class="go">NAME              STATUS   ROLES    AGE   VERSION       INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME</span>
-<span class="go">docker-worker-0   Ready    &lt;none&gt;   15m   v1.35.2+k0s   172.27.77.155   &lt;none&gt;        Ubuntu 22.04.3 LTS   5.15.0-82-generic   docker://24.0.7</span>
+<span class="go">docker-worker-0   Ready    &lt;none&gt;   15m   v1.37.1+k0s   172.27.77.155   &lt;none&gt;        Ubuntu 22.04.3 LTS   5.15.0-82-generic   docker://24.0.7</span>
 </code></pre></div>
 <p>On the worker nodes, the Kubernetes containers should be listed as regular
 Docker containers:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;table {{.ID}}\t{{.Names}}\t{{.State}}\t{{.Status}}&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s2">"table {{.ID}}\t{{.Names}}\t{{.State}}\t{{.Status}}"</span>
 <span class="go">CONTAINER ID   NAMES                                                                                                   STATE     STATUS</span>
 <span class="go">9167a937af28   k8s_konnectivity-agent_konnectivity-agent-9rnj7_kube-system_430027b4-75c3-487c-b94d-efeb7204616d_1      running   Up 14 minutes</span>
 <span class="go">b6978162a05d   k8s_metrics-server_metrics-server-7556957bb7-wfg8k_kube-system_5f642105-78c8-450a-bfd2-2021b680b932_1   running   Up 14 minutes</span>
@@ -3366,14 +3475,6 @@ Docker containers:</p>
     
     
     
-    <a href="https://x.com/k0sproject" target="_blank" rel="noopener" title="k0s on X" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M357.2 48h70.6L273.6 224.2 455 464H313L201.7 318.6 74.5 464H3.8l164.9-188.5L-5.2 48h145.6l100.5 132.9zm-24.8 373.8h39.1L119.1 88h-42z"/></svg>
-    </a>
-  
-    
-    
-    
-    
     <a href="https://blog.k0sproject.io/" target="_blank" rel="noopener" title="The k0sproject community blog" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"/></svg>
     </a>
@@ -3390,7 +3491,7 @@ Docker containers:</p>
     
     
     
-    <a href="https://kubernetes.slack.com/archives/C07VAPJUECS" target="_blank" rel="noopener" title="k0s on the k8s slack" class="md-social__link">
+    <a href="https://kubernetes.slack.com/archives/C0809EA06QZ" target="_blank" rel="noopener" title="#k0s-users on Kubernetes Slack" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
     </a>
   
@@ -3417,10 +3518,10 @@ Docker containers:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["toc.autohide", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["toc.autohide", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
